@@ -26,21 +26,24 @@ public class Wolf {
     @Column(name = "birth_date", nullable = false)
     private java.sql.Date birthDate;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    private Pack pack;
+
     //region Constructors
 
 
     public Wolf() {
     }
 
-    public Wolf(Long id, String firstName, String lastName, Gender gender, Date birthDate) {
+    public Wolf(Long id, String firstName, String lastName, Gender gender, Date birthDate, Pack pack) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.birthDate = birthDate;
+        this.pack = pack;
     }
-
-    //endregion
+//endregion
 
     //region Getters and Setters
 
@@ -88,6 +91,16 @@ public class Wolf {
         this.birthDate = birthDate;
         return this;
     }
+
+    public Pack getPack() {
+        return pack;
+    }
+
+    public Wolf setPack(Pack pack) {
+        this.pack = pack;
+        return this;
+    }
+
 
     //endregion
 }
