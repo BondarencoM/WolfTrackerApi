@@ -1,16 +1,22 @@
 package com.wolfpack.tracker.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wolfpack.tracker.data.Gender;
+import com.wolfpack.tracker.data.entities.embeddable.Coordinates;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "wolves")
+@Where(clause = "is_deleted = false")
+@SQLDelete(sql = "UPDATE wolves SET is_deleted = true WHERE id = ?")
 public class Wolf {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "first_name", nullable = false)
@@ -26,7 +32,14 @@ public class Wolf {
     @Column(name = "birth_date", nullable = false)
     private java.sql.Date birthDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @Embedded
+    private Coordinates location;
+
+    @JsonIgnore
+    @Column(name = "is_deleted")
+    private boolean deleted;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     private Pack pack;
 
     //region Constructors
@@ -35,12 +48,14 @@ public class Wolf {
     public Wolf() {
     }
 
-    public Wolf(Long id, String firstName, String lastName, Gender gender, Date birthDate, Pack pack) {
+    public Wolf(Long id, String firstName, String lastName, Gender gender, Date birthDate, Coordinates location, boolean deleted, Pack pack) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.birthDate = birthDate;
+        this.location = location;
+        this.deleted = deleted;
         this.pack = pack;
     }
 //endregion
@@ -98,6 +113,24 @@ public class Wolf {
 
     public Wolf setPack(Pack pack) {
         this.pack = pack;
+        return this;
+    }
+
+    public Coordinates getLocation() {
+        return location;
+    }
+
+    public Wolf setLocation(Coordinates location) {
+        this.location = location;
+        return this;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public Wolf setDeleted(boolean deleted) {
+        this.deleted = deleted;
         return this;
     }
 
