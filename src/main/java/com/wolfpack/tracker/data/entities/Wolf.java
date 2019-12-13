@@ -35,7 +35,7 @@ public class Wolf {
     @ValueOfEnum(enumClass = Gender.class, message = "must be any of [Female, Male, NotSpecified, Other]")
     private String gender;
 
-    @NotNull(message = "Birsth date is mandatory")
+    @NotNull(message = "Birth date is mandatory")
     @Column(name = "birth_date", nullable = false)
     private java.sql.Date birthDate;
 

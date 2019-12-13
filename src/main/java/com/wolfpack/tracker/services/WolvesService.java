@@ -14,10 +14,12 @@ import java.util.List;
 public class WolvesService {
 
     private WolfRepository repository;
+    private PackValidationService packsValidationService;
 
 
-    public WolvesService(WolfRepository repository) {
+    public WolvesService(WolfRepository repository, PackValidationService packsService) {
         this.repository = repository;
+        this.packsValidationService = packsService;
     }
 
     public List<Wolf> getAllWolves(){
@@ -25,6 +27,7 @@ public class WolvesService {
     }
 
     public Wolf createWolf(Wolf wolf){
+        packsValidationService.assurePackExists(wolf.getPack());
         return repository.save(wolf);
     }
 
