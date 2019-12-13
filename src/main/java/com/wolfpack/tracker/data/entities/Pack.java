@@ -5,6 +5,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "packs")
@@ -16,6 +17,7 @@ public class Pack {
     private Long id;
 
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "Pack name is mandatory")
     private String name;
 
     @JsonIgnore

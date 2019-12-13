@@ -9,6 +9,7 @@ import com.wolfpack.tracker.services.WolvesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -26,12 +27,12 @@ public class PackController {
 
     @GetMapping
     public ResponseEntity<List<Pack>> getAllPacks(){
-        var allPacks = service.getAllPacks();
+        List<Pack> allPacks = service.getAllPacks();
         return ResponseEntity.ok(allPacks);
     }
 
     @PostMapping
-    public ResponseEntity<Void> createPack(@RequestBody Pack pack){
+    public ResponseEntity<Void> createPack(@Valid @RequestBody Pack pack){
         var createdPack = service.createPack(pack);
         URI location = UriHelper.buildNewResourceUri(createdPack.getId());
         return ResponseEntity.created(location).build();
@@ -43,7 +44,7 @@ public class PackController {
         return  ResponseEntity.ok(pack);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePack(@PathVariable("id") Long id, @RequestBody Pack pack){
+    public ResponseEntity<?> updatePack(@PathVariable("id") Long id, @Valid @RequestBody Pack pack){
         service.updatePack(id, pack);
         return ResponseEntity.ok().build();
     }

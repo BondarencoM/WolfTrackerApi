@@ -3,10 +3,13 @@ package com.wolfpack.tracker.data.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wolfpack.tracker.data.Gender;
 import com.wolfpack.tracker.data.entities.embeddable.Coordinates;
+import com.wolfpack.tracker.data.validation.ValueOfEnum;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
 @Entity
@@ -20,15 +23,19 @@ public class Wolf {
     private Long id;
 
     @Column(name = "first_name", nullable = false)
+    @NotBlank(message = "First name is mandatory")
     private String firstName;
 
     @Column(name = "last_name", nullable = false)
+    @NotBlank(message = "Last name is mandatory")
     private String lastName;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
-    private Gender gender;
+    @NotBlank(message = "Gender cannot be null, but you can set it to 'NotSpecified'")
+    @ValueOfEnum(enumClass = Gender.class, message = "must be any of [Female, Male, NotSpecified, Other]")
+    private String gender;
 
+    @NotNull(message = "Birsth date is mandatory")
     @Column(name = "birth_date", nullable = false)
     private java.sql.Date birthDate;
 
@@ -48,7 +55,7 @@ public class Wolf {
     public Wolf() {
     }
 
-    public Wolf(Long id, String firstName, String lastName, Gender gender, Date birthDate, Coordinates location, boolean deleted, Pack pack) {
+    public Wolf(Long id, String firstName, String lastName, String gender, Date birthDate, Coordinates location, boolean deleted, Pack pack) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -90,10 +97,15 @@ public class Wolf {
     }
 
     public Gender getGender() {
-        return gender;
+        return Gender.valueOf(gender);
     }
 
     public Wolf setGender(Gender gender) {
+        this.gender = gender.name();
+        return this;
+    }
+
+    private Wolf setGender(String gender) {
         this.gender = gender;
         return this;
     }

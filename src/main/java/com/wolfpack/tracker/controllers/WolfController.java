@@ -9,6 +9,7 @@ import com.wolfpack.tracker.services.WolvesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class WolfController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createWolf(@RequestBody Wolf body){
+    public ResponseEntity<?> createWolf(@Valid @RequestBody Wolf body){
         Wolf createdWolf = service.createWolf(body);
 
         URI location = UriHelper.buildNewResourceUri(createdWolf.getId());
@@ -44,7 +45,7 @@ public class WolfController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateWolf(@PathVariable Long id, @RequestBody Wolf wolf){
+    public ResponseEntity<?> updateWolf(@PathVariable Long id, @Valid @RequestBody Wolf wolf){
         service.updateWolf(id, wolf);
         return ResponseEntity.ok().build();
     }
