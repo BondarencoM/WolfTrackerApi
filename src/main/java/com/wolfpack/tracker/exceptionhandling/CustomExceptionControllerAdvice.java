@@ -1,14 +1,12 @@
 package com.wolfpack.tracker.exceptionhandling;
 
+import org.springframework.core.NestedExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -16,21 +14,23 @@ import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
-public class RestResponseEntityExceptionHandler  extends ResponseEntityExceptionHandler {
+@RestControllerAdvice(annotations = {RestController.class})
+public class CustomExceptionControllerAdvice {
 
-    @ExceptionHandler({ EntityNotFoundException.class})
-    protected ResponseEntity<Object> handleConflict(EntityNotFoundException exception, WebRequest request) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<?> handleConflict(EntityNotFoundException exception) {
+        Map<String, Object> body = new HashMap<>();
 
-        var headers = new HttpHeaders();
-        var body = new ApiExceptionMessageDTO(exception);
+        Throwable root = NestedExceptionUtils.getMostSpecificCause(exception);
 
-        return super.handleExceptionInternal(exception, body, headers, HttpStatus.NOT_FOUND, request);
+        body.put("cause", root.getMessage());
+        body.put("message", exception.getMessage());
+
+        return ResponseEntity.badRequest().body(body);
     }
 
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();

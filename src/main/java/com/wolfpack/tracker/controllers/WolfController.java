@@ -1,5 +1,6 @@
 package com.wolfpack.tracker.controllers;
 
+import com.wolfpack.tracker.data.Gender;
 import com.wolfpack.tracker.data.dto.IdDTO;
 import com.wolfpack.tracker.data.entities.Pack;
 import com.wolfpack.tracker.data.entities.Wolf;
@@ -32,9 +33,7 @@ public class WolfController {
     @PostMapping
     public ResponseEntity<?> createWolf(@Valid @RequestBody Wolf body){
         Wolf createdWolf = service.createWolf(body);
-
         URI location = UriHelper.buildNewResourceUri(createdWolf.getId());
-
         return ResponseEntity.created(location).build();
     }
 
@@ -80,5 +79,9 @@ public class WolfController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/genders")
+    public ResponseEntity<Gender[]> getAllPossibleGenders(){
+        return ResponseEntity.ok(Gender.values());
+    }
 
 }
