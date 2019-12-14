@@ -32,17 +32,16 @@ public class WolvesService {
     }
 
     public Wolf getOneWolf(Long id) {
-        var found = repository.getOne(id);
+        Wolf found = repository.getOne(id);
         return HibernateHelper.resolveProxy(found);
     }
 
     public Pack getOneWolfsPack(Long id) {
-        var wolf = getOneWolf(id);
+        Wolf wolf = getOneWolf(id);
         return wolf.getPack();
     }
 
     public void assignWolfToPack(long wolfId, IdDTO pack) {
-        //TODO handle case if pack does not exist
         if(pack.getId() == null){
             removeWolfFromPack(wolfId);
         }else{
@@ -55,13 +54,13 @@ public class WolvesService {
         repository.save(wolf);
     }
     public void assignWolfToPack(Long wolfId, long packId) {
-        var wolf = repository.getOne(wolfId);
+        packsValidationService.assurePackExists(packId);
 
+        var wolf = repository.getOne(wolfId);
         var pack = new Pack().setId(packId);
         wolf.setPack(pack);
 
         repository.save(wolf);
-
     }
 
     public List<Wolf> getWolvesInPack(Long packId) {
