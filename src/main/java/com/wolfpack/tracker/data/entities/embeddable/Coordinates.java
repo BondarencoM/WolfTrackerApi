@@ -2,6 +2,9 @@ package com.wolfpack.tracker.data.entities.embeddable;
 
 import javax.persistence.Embeddable;
 
+/**
+ * Encapsulates the longitude and latitude on a map
+ */
 @Embeddable
 public class Coordinates {
     private Double latitude;

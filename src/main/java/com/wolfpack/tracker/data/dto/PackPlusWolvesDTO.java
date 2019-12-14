@@ -6,6 +6,10 @@ import com.wolfpack.tracker.data.entities.Wolf;
 
 import java.util.List;
 
+/**
+ * Represents one pack with all the usual properties
+ * and has additionally a list of wolves in the pack
+ */
 public class PackPlusWolvesDTO {
 
     @JsonUnwrapped

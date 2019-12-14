@@ -1,19 +1,19 @@
 package com.wolfpack.tracker.exceptionhandling;
 
 import org.springframework.core.NestedExceptionUtils;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Contains custom handling mechanisms
+ * for exceptions thrown as a result of API calls
+ */
 @RestControllerAdvice(annotations = {RestController.class})
 public class CustomExceptionControllerAdvice {
 

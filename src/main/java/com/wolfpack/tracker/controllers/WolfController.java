@@ -25,7 +25,7 @@ public class WolfController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Wolf>> getAllWolves(){
+    public ResponseEntity<?> getAllWolves(){
         var allWolves = service.getAllWolves();
         return ResponseEntity.ok(allWolves);
     }

@@ -9,6 +9,12 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * Annotation used to validate value of a string
+ * against the possible values of an enum
+ * @see com.wolfpack.tracker.data.validation.ValueOfEnumValidator
+ */
+
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 @Documented

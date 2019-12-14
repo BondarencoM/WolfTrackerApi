@@ -1,14 +1,18 @@
 package com.wolfpack.tracker.data.validation;
 
-import com.wolfpack.tracker.data.Gender;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Class used to validate value of a string
+ * against the possible values of an enum
+ *
+ * @see com.wolfpack.tracker.data.validation.ValueOfEnumValidator
+ */
 public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, CharSequence> {
     private List<String> acceptedValues;
 

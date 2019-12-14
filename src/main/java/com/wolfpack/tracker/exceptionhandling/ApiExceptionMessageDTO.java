@@ -1,5 +1,9 @@
 package com.wolfpack.tracker.exceptionhandling;
 
+/**
+ * Represents a semantically generic error message
+ * for exceptions handled in the ControllerAdvice
+ */
 public class ApiExceptionMessageDTO {
 
     private String message;
